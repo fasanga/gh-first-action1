@@ -1,0 +1,10 @@
+name: First workflow # this is giving your acion a name
+on: workflow_dispatch #this is the triger and the name could be any thing
+jobes: 
+  first-job:
+    runs-on: Ubuntu-latest
+    steps: 
+      - name: print greetings
+        run: echo "Hello world"
+      - name: print goodbye message
+        run: echo "Done and bye for now"
