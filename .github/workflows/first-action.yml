@@ -1,6 +1,6 @@
 name: First workflow
 on: workflow_dispatch
-jobes: 
+jobs: 
   first-job:
     runs-on: Ubuntu-latest
     steps: 
