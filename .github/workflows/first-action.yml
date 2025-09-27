@@ -1,5 +1,5 @@
-name: First workflow # this is giving your acion a name
-on: workflow_dispatch #this is the triger and the name could be any thing
+name: First workflow
+on: workflow_dispatch
 jobes: 
   first-job:
     runs-on: Ubuntu-latest
