@@ -11,6 +11,8 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+      - name: show files
+        run: ls -la 
       - name: Install all dependencies
         run: npm install
       - name: Run tests
