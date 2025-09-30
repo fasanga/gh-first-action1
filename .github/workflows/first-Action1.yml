@@ -1,29 +1,36 @@
+name: CI
+
 on: push
 
 jobs:
   test-job:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout (incl. submodules)
+      # 1) Get the repo (and submodules if present)
+      - name: Checkout
         uses: actions/checkout@v4
         with:
-          submodules: recursive
-          token: ${{ secrets.GITHUB_TOKEN }}   # or a PAT if the submodule is private
+          submodules: recursive         # harmless if you have no submodules
 
+      # 2) Setup Node + enable npm cache pointing at the correct lockfile
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-          cache-dependency-path: gh-first-action1/package-lock.json  # <-- lockfile path
+          cache-dependency-path: gh-first-action1/package-lock.json  # <- lockfile path
 
-      - name: Sanity check (see files)
+      # 3) (Optional) Quick sanity print — remove after it’s green
+      - name: Debug paths
         run: |
           pwd
           ls -la
           ls -la gh-first-action1
+          test -f gh-first-action1/package-lock.json && echo "Lockfile found ✅" || (echo "Lockfile missing ❌" && exit 1)
 
-      - name: Install deps
+      # 4) Install deps and run tests from the project folder
+      - name: Install dependencies
         working-directory: gh-first-action1
         run: npm ci
 
