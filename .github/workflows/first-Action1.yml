@@ -1,19 +1,32 @@
-name: Test project
 on: push
-jobs: 
+
+jobs:
   test-job:
-    runs-on: Ubuntu-latest
-    steps: 
-      - name: Get the code
-        uses: actions/checkout@v3
-      - name: Install Node.js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (incl. submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          token: ${{ secrets.GITHUB_TOKEN }}   # or a PAT if the submodule is private
+
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-      - name: show files
-        run: ls -la 
-      - name: Install all dependencies
-        run: npm install
+          cache-dependency-path: gh-first-action1/package-lock.json  # <-- lockfile path
+
+      - name: Sanity check (see files)
+        run: |
+          pwd
+          ls -la
+          ls -la gh-first-action1
+
+      - name: Install deps
+        working-directory: gh-first-action1
+        run: npm ci
+
       - name: Run tests
+        working-directory: gh-first-action1
         run: npm test
